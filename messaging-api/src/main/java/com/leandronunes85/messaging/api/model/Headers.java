@@ -12,6 +12,10 @@ import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 
+/**
+ * Headers to be used by the {@link Message} class. It stores key-value pairs (both represented by {@link String}s for
+ * simplicity).
+ */
 public class Headers {
 
     private static final Function<Map.Entry<String, String>, Pair<String, String>> ENTRY_TO_PAIR =

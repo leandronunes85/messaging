@@ -5,6 +5,11 @@ import com.google.common.base.Supplier;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Suppliers.ofInstance;
 
+/**
+ * Generic message representation. These are the instances that will be serialized and sent through the wire. This class
+ * knows nothing about the serialization/deserialization process though.
+ * @param <T> The type of the payload this message stores
+ */
 public class Message<T> {
 
     private final Supplier<Headers> headers;

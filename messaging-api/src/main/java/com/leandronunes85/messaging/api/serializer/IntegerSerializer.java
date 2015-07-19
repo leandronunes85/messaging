@@ -2,6 +2,9 @@ package com.leandronunes85.messaging.api.serializer;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Simple {@link Serializer} implementation for {@link Integer}s
+ */
 public class IntegerSerializer implements Serializer<Integer> {
 
     public static final int INT_BYTE_COUNT = 4;

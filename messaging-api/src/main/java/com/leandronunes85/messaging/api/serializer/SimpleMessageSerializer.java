@@ -9,6 +9,13 @@ import static com.leandronunes85.messaging.api.serializer.IntegerSerializer.INT_
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 import static org.apache.commons.lang3.ArrayUtils.subarray;
 
+/**
+ * Very simple and straightforward {@link Serializer} implementation for {@link Message}s of any payload type ({@link T}).
+ * This implementation is not intended to be heavily used. Usually one will want to take advantage of all the features
+ * the serialization tool provides and that means that probably another {@link Serializer} specific to that tool would be
+ * advisable.
+ * @param <T> Type of the payload of the message.
+ */
 public class SimpleMessageSerializer<T> implements Serializer<Message<T>> {
 
     private final Serializer<Headers> headersSerializer;
