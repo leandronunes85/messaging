@@ -1,0 +1,8 @@
+{"namespace": "com.leandronunes85.messaging.avro.model",
+ "type": "record",
+ "name": "AvroMessage",
+ "fields": [
+     {"name": "headers", "type": {"type": "map", "values": "string"}},
+     {"name": "payload",  "type": "bytes"}
+ ]
+}
