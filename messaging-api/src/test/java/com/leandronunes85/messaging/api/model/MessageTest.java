@@ -1,26 +1,57 @@
 package com.leandronunes85.messaging.api.model;
 
+import com.google.common.base.Optional;
+import org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.Collection;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.lang3.tuple.Pair.of;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class MessageTest {
 
-    private static final Headers HEADERS = new Headers();
+    private static final Collection<Pair<String, String>> HEADERS = newArrayList(of("Key1", "Value1"));
     private static final String PAYLOAD = "Payload";
 
     private Message<String> victim;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        victim = new Message<String>(HEADERS, PAYLOAD);
+        victim = new Message<>(HEADERS, PAYLOAD);
     }
 
     @Test
     public void shouldReturnCorrectHeaders() throws Exception {
-        Headers actual = victim.getHeaders();
+        Collection<Pair<String, String>> actual = victim.getAllHeaders();
         assertEquals(actual, HEADERS);
+    }
+
+    @Test
+    public void shouldAddHeader() throws Exception {
+        String expected = "Value2";
+
+        victim.putHeader("Key2", expected);
+        Optional<String> actual = victim.getHeader("Key2");
+
+        assertTrue(actual.isPresent());
+        assertEquals(actual.get(), expected);
+    }
+
+    @Test
+    public void shouldRemoveHeader() throws Exception {
+
+        Optional<String> actual = victim.removeHeader("Key1");
+
+        assertTrue(actual.isPresent());
+        assertEquals(actual.get(), "Value1");
+
+        actual = victim.getHeader("Key2");
+        assertFalse(actual.isPresent());
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.leandronunes85.messaging.avro.converter;
 
 import com.google.common.collect.Maps;
 import com.leandronunes85.messaging.api.converter.Converter;
-import com.leandronunes85.messaging.api.model.Headers;
 import com.leandronunes85.messaging.api.model.Message;
 import com.leandronunes85.messaging.api.serializer.Serializer;
 import com.leandronunes85.messaging.avro.model.AvroMessage;
@@ -28,7 +27,7 @@ public class AvroMessageConverter<T>
         AvroMessage.Builder builder = AvroMessage.newBuilder();
 
         Map<CharSequence, CharSequence> headerMap = Maps.newHashMap();
-        for (Pair<String, String> header : toConvert.getHeaders().getAll()) {
+        for (Pair<String, String> header : toConvert.getAllHeaders()) {
             headerMap.put(header.getKey(), header.getValue());
         }
         byte[] payloadBytes = payloadSerializer.serialize(toConvert.getPayload());
@@ -42,12 +41,12 @@ public class AvroMessageConverter<T>
     @Override
     public Message<T> reverse(AvroMessage toConvert) {
 
-        Headers headers = new Headers();
+        Message<T> message = new Message<>(from(payloadSerializer, toConvert.getPayload().array()));
+
         for (Map.Entry<CharSequence, CharSequence> header : toConvert.getHeaders().entrySet()) {
-            headers.put(header.getKey().toString(), header.getValue().toString());
+            message.putHeader(header.getKey().toString(), header.getValue().toString());
         }
 
-        return new com.leandronunes85.messaging.api.model.Message(
-                headers, from(payloadSerializer, toConvert.getPayload().array()));
+        return message;
     }
 }

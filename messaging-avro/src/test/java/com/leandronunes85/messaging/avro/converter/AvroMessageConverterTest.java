@@ -1,6 +1,5 @@
 package com.leandronunes85.messaging.avro.converter;
 
-import com.leandronunes85.messaging.api.model.Headers;
 import com.leandronunes85.messaging.api.model.Message;
 import com.leandronunes85.messaging.api.serializer.IntegerSerializer;
 import com.leandronunes85.messaging.avro.model.AvroMessage;
@@ -25,10 +24,9 @@ public class AvroMessageConverterTest {
 
     @Test
     public void shouldConvertHeaders() throws Exception {
-        Headers headers = new Headers();
-        headers.put("Key1", "Value1");
-        headers.put("Key2", "Value2");
-        Message<Integer> message = new Message(headers, 10);
+        Message<Integer> message = new Message(10);
+        message.putHeader("Key1", "Value1");
+        message.putHeader("Key2", "Value2");
 
         AvroMessage actual = victim.convert(message);
 
@@ -38,7 +36,7 @@ public class AvroMessageConverterTest {
 
     @Test
     public void shouldUseSerializerToSerializePayload() throws Exception {
-        Message<Integer> message = new Message(new Headers(), 10);
+        Message<Integer> message = new Message(10);
 
         victim.convert(message);
 
