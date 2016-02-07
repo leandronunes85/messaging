@@ -11,10 +11,9 @@ import java.util.concurrent.Future;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
 
 public class LazyDeserializerSupplierTest {
 
@@ -39,7 +38,7 @@ public class LazyDeserializerSupplierTest {
     public void shouldDeserializeWhenRequested() throws Exception {
         Integer actual = victim.get();
         verify(integerSerializer).deserialize(any(byte[].class));
-        assertEquals(actual, EXPECTED);
+        assertThat(actual).isEqualTo(EXPECTED);
     }
 
     @Test
@@ -49,9 +48,9 @@ public class LazyDeserializerSupplierTest {
 
         verify(integerSerializer, times(1)).deserialize(any(byte[].class));
 
-        assertEquals(actual1, EXPECTED);
-        assertEquals(actual2, EXPECTED);
-        assertSame(actual1, actual2);
+        assertThat(actual1).isEqualTo(EXPECTED);
+        assertThat(actual2).isEqualTo(EXPECTED);
+        assertThat(actual1).isSameAs(actual2);
     }
 
     @Test
@@ -75,7 +74,7 @@ public class LazyDeserializerSupplierTest {
 
         verify(integerSerializer, times(1)).deserialize(any(byte[].class));
         for (Future<Integer> result : results) {
-            assertEquals(result.get(), EXPECTED);
+            assertThat(result.get()).isEqualTo(EXPECTED);
         }
     }
 }

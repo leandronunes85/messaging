@@ -6,9 +6,9 @@ import com.leandronunes85.messaging.avro.model.AvroMessage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.testng.Assert.assertEquals;
 
 public class AvroMessageConverterTest {
 
@@ -30,8 +30,8 @@ public class AvroMessageConverterTest {
 
         AvroMessage actual = victim.convert(message);
 
-        assertEquals(actual.getHeaders().get("Key1"), "Value1");
-        assertEquals(actual.getHeaders().get("Key2"), "Value2");
+        assertThat(actual.getHeaders().get("Key1")).isEqualTo("Value1");
+        assertThat(actual.getHeaders().get("Key2")).isEqualTo("Value2");
     }
 
     @Test

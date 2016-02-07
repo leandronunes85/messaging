@@ -3,8 +3,11 @@ package com.leandronunes85.messaging.api.model;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.base.Optional.fromNullable;
@@ -17,7 +20,7 @@ import static com.google.common.collect.Maps.newHashMap;
  * simplicity).
  */
 public class Headers {
-
+    private static final Logger LOG = LoggerFactory.getLogger(Headers.class);
     private static final Function<Map.Entry<String, String>, Pair<String, String>> ENTRY_TO_PAIR =
             new Function<Map.Entry<String, String>, Pair<String, String>>() {
                 public Pair<String, String> apply(Map.Entry<String, String> entry) {
@@ -25,7 +28,7 @@ public class Headers {
                 }
             };
 
-    private final Map<String, String> headersMap;
+    private final HashMap<String, String> headersMap;
 
     public Headers() {
         this.headersMap = newHashMap();
@@ -39,18 +42,29 @@ public class Headers {
     }
 
     public void put(String key, String value) {
-        headersMap.put(checkNotNull(key), checkNotNull(value));
+        LOG.trace("op=put, key='{}', value='{}'", key, value);
+        String oldValue = headersMap.put(checkNotNull(key), checkNotNull(value));
+        LOG.debug("op=put, key='{}', value='{}', oldValue='{}'", key, value, oldValue);
     }
 
     public Optional<String> get(String key) {
-        return fromNullable(headersMap.get(key));
+        LOG.trace("op=get, key='{}'", key);
+        Optional<String> result = fromNullable(headersMap.get(key));
+        LOG.debug("op=get, key='{}', result='{}'", key, result);
+        return result;
     }
 
     public Collection<Pair<String, String>> getAll() {
-        return from(headersMap.entrySet()).transform(ENTRY_TO_PAIR).toSet();
+        LOG.trace("op=getAll");
+        Collection<Pair<String, String>> result = from(headersMap.entrySet()).transform(ENTRY_TO_PAIR).toSet();
+        LOG.debug("op=getAll, result='{}'", result);
+        return result;
     }
 
     public Optional<String> remove(String key) {
-        return fromNullable(headersMap.remove(key));
+        LOG.trace("op=remove, key='{}'", key);
+        Optional<String> result = fromNullable(headersMap.remove(key));
+        LOG.debug("op=remove, key='{}', result='{}'", key, result);
+        return result;
     }
 }

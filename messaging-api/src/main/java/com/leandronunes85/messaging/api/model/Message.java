@@ -52,6 +52,7 @@ public class Message<T> {
     public Optional<String> removeHeader(String key) {
         return headers.remove(key);
     }
+
     public T getPayload() {
         return payload.get();
     }

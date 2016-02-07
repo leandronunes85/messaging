@@ -4,9 +4,7 @@ import com.google.common.base.Optional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HeadersTest {
 
@@ -22,7 +20,7 @@ public class HeadersTest {
 
     @Test
     public void shouldStartWithNoHeadersDefined() {
-        assertTrue(victim.getAll().isEmpty());
+        assertThat(victim.getAll()).isEmpty();
     }
 
     @Test
@@ -30,7 +28,7 @@ public class HeadersTest {
 
         Optional<String> actual = victim.get("NOT_EXISTENT_KEY");
 
-        assertFalse(actual.isPresent());
+        assertThat(actual.isPresent()).isFalse();
     }
 
     @Test
@@ -38,8 +36,8 @@ public class HeadersTest {
         victim.put(KEY, VALUE);
         Optional<String> actual = victim.get(KEY);
 
-        assertTrue(actual.isPresent());
-        assertEquals(actual.get(), VALUE);
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(actual.get()).isEqualTo(VALUE);
     }
 
     @Test
@@ -49,7 +47,7 @@ public class HeadersTest {
         victim.put(KEY, VALUE);
         Optional<String> actual = victim.get(KEY);
 
-        assertTrue(actual.isPresent());
-        assertEquals(actual.get(), VALUE);
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(actual.get()).isEqualTo(VALUE);
     }
 }

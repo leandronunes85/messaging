@@ -9,9 +9,7 @@ import java.util.Collection;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.tuple.Pair.of;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MessageTest {
 
@@ -28,7 +26,7 @@ public class MessageTest {
     @Test
     public void shouldReturnCorrectHeaders() throws Exception {
         Collection<Pair<String, String>> actual = victim.getAllHeaders();
-        assertEquals(actual, HEADERS);
+        assertThat(actual).containsExactlyElementsOf(HEADERS);
     }
 
     @Test
@@ -38,8 +36,8 @@ public class MessageTest {
         victim.putHeader("Key2", expected);
         Optional<String> actual = victim.getHeader("Key2");
 
-        assertTrue(actual.isPresent());
-        assertEquals(actual.get(), expected);
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(actual.get()).isEqualTo(expected);
     }
 
     @Test
@@ -47,16 +45,16 @@ public class MessageTest {
 
         Optional<String> actual = victim.removeHeader("Key1");
 
-        assertTrue(actual.isPresent());
-        assertEquals(actual.get(), "Value1");
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(actual.get()).isEqualTo("Value1");
 
-        actual = victim.getHeader("Key2");
-        assertFalse(actual.isPresent());
+        actual = victim.getHeader("Key1");
+        assertThat(actual.isPresent()).isFalse();
     }
 
     @Test
     public void shouldReturnCorrectPayload() throws Exception {
         String actual = victim.getPayload();
-        assertEquals(actual, PAYLOAD);
+        assertThat(actual).isEqualTo(PAYLOAD);
     }
 }

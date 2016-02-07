@@ -6,9 +6,9 @@ import com.leandronunes85.messaging.api.serializer.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
 
 public class AvroMessageSerializerTest {
 
@@ -39,10 +39,9 @@ public class AvroMessageSerializerTest {
 
         Message<Integer> actual = victim.deserialize(victim.serialize(expected));
 
-        assertEquals(actual.getHeader("Key1"), expected.getHeader("Key1"));
-        assertEquals(actual.getHeader("Key2"), expected.getHeader("Key2"));
-
-        assertEquals(actual.getPayload().intValue(), 10);
+        assertThat(actual.getHeader("Key1").get()).isEqualTo("Value1");
+        assertThat(actual.getHeader("Key2").get()).isEqualTo("Value2");
+        assertThat(actual.getPayload()).isEqualTo(10);
     }
 
     @Test

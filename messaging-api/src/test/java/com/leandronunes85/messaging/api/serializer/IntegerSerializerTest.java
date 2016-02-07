@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 
 import java.util.Random;
 
-import static org.testng.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IntegerSerializerTest {
 
@@ -24,6 +24,6 @@ public class IntegerSerializerTest {
 
         Integer actual = victim.deserialize(victim.serialize(expected));
 
-        assertEquals(actual, expected);
+        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -2,6 +2,8 @@ package com.leandronunes85.messaging.api.supplier;
 
 import com.google.common.base.Supplier;
 import com.leandronunes85.messaging.api.serializer.Deserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -11,8 +13,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class LazyDeserializerSupplier<T> implements Supplier<T> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LazyDeserializerSupplier.class);
+
     public static <T> LazyDeserializerSupplier<T> from(Deserializer<T> serializer, byte[] bytes) {
-        return new LazyDeserializerSupplier<T>(serializer, bytes);
+        return new LazyDeserializerSupplier<>(serializer, bytes);
     }
 
     private final Deserializer<T> serializer;
@@ -25,9 +29,19 @@ public class LazyDeserializerSupplier<T> implements Supplier<T> {
     }
 
     public synchronized T get() {
-        if (obj == null) {
-            obj = serializer.deserialize(bytes);
+        if (this.obj == null) {
+            deserializeBytes();
         }
-        return obj;
+        return this.obj;
+    }
+
+    private void deserializeBytes() {
+        LOG.trace("op=deserializeBytes, serializer='{}', bytesLength={}, msg='Obj will be deserialized.'",
+                serializer, bytes.length);
+
+        this.obj = serializer.deserialize(bytes);
+
+        LOG.debug("op=deserializeBytes, serializer='{}', bytesLength={}, obj='{}', msg='Obj was deserialized.'",
+                serializer, bytes.length, obj);
     }
 }
