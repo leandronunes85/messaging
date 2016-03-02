@@ -1,13 +1,12 @@
 package com.leandronunes85.messaging.api.model;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Supplier;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Supplier;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Suppliers.ofInstance;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Generic message representation. These are the instances that will be serialized and sent through the wire. This class
@@ -21,20 +20,20 @@ public class Message<T> {
     private final Supplier<T> payload;
 
     public Message(T payload) {
-        this(new Headers(), ofInstance(checkNotNull(payload)));
+        this(new Headers(), () -> requireNonNull(payload));
     }
 
     public Message(Supplier<T> payload) {
-        this(new Headers(), checkNotNull(payload));
+        this(new Headers(), requireNonNull(payload));
     }
 
     public Message(Collection<Pair<String, String>> headers, T payload) {
-        this(new Headers(checkNotNull(headers)), ofInstance(checkNotNull(payload)));
+        this(new Headers(requireNonNull(headers)), () -> requireNonNull(payload));
     }
 
     private Message(Headers headers, Supplier<T> payload) {
-        this.headers = checkNotNull(headers);
-        this.payload = checkNotNull(payload);
+        this.headers = requireNonNull(headers);
+        this.payload = requireNonNull(payload);
     }
 
     public void putHeader(String key, String value) {

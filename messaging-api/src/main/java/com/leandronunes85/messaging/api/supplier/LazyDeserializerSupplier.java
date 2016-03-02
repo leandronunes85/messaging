@@ -1,11 +1,12 @@
 package com.leandronunes85.messaging.api.supplier;
 
-import com.google.common.base.Supplier;
 import com.leandronunes85.messaging.api.serializer.Deserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.function.Supplier;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * {@link Supplier} implementation that lazily deserializes a given byte[].
@@ -24,8 +25,8 @@ public class LazyDeserializerSupplier<T> implements Supplier<T> {
     private T obj = null;
 
     private LazyDeserializerSupplier(Deserializer<T> serializer, byte[] bytes) {
-        this.serializer = checkNotNull(serializer);
-        this.bytes = checkNotNull(bytes);
+        this.serializer = requireNonNull(serializer);
+        this.bytes = requireNonNull(bytes);
     }
 
     public synchronized T get() {
