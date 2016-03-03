@@ -8,12 +8,11 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.tuple.Pair.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MessageTest {
 
-    private static final Collection<Pair<String, String>> HEADERS = asList(of("Key1", "Value1"));
+    private static final Headers HEADERS = new Headers(asList(Pair.of("Key1", "Value1")));
     private static final String PAYLOAD = "Payload";
 
     private Message<String> victim;
@@ -26,7 +25,7 @@ public class MessageTest {
     @Test
     public void shouldReturnCorrectHeaders() throws Exception {
         Collection<Pair<String, String>> actual = victim.getAllHeaders();
-        assertThat(actual).containsExactlyElementsOf(HEADERS);
+        assertThat(actual).containsExactlyElementsOf(HEADERS.getAll());
     }
 
     @Test

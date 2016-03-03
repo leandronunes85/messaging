@@ -2,15 +2,18 @@ package com.leandronunes85.messaging.avro.converter;
 
 import com.leandronunes85.messaging.api.LogFormatEnforcer;
 import com.leandronunes85.messaging.api.converter.Converter;
+import com.leandronunes85.messaging.api.model.Headers;
 import com.leandronunes85.messaging.api.model.Message;
 import com.leandronunes85.messaging.api.serializer.Serializer;
+import com.leandronunes85.messaging.api.supplier.LazyDeserializerSupplier;
 import com.leandronunes85.messaging.avro.model.AvroMessage;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.nio.ByteBuffer;
+import java.util.function.Supplier;
 
-import static com.leandronunes85.messaging.api.supplier.LazyDeserializerSupplier.from;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.slf4j.event.Level.DEBUG;
 import static org.slf4j.event.Level.TRACE;
@@ -49,8 +52,13 @@ public class AvroMessageConverter<T> implements Converter<Message<T>, AvroMessag
     public Message<T> reverse(AvroMessage toConvert) {
         LOGGER.log(TRACE, b -> b.operation("reverse").and("toConvert", toConvert));
 
-        Message<T> result = new Message<>(from(payloadSerializer, toConvert.getPayload().array()));
-        toConvert.getHeaders().entrySet().forEach(e -> result.putHeader(e.getKey().toString(), e.getValue().toString()));
+        Headers headers = new Headers(
+                toConvert.getHeaders().entrySet().stream()
+                        .map(e -> Pair.of(e.getKey().toString(), e.getValue().toString()))
+                        .collect(toList())
+        );
+        Supplier<T> payload = new LazyDeserializerSupplier<>(payloadSerializer, toConvert.getPayload().array());
+        Message<T> result = new Message<>(headers, payload);
 
         LOGGER.log(DEBUG, b -> b.operation("reverse").and("toConvert", toConvert).and("result", result));
 

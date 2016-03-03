@@ -23,15 +23,11 @@ public class Message<T> {
         this(new Headers(), () -> requireNonNull(payload));
     }
 
-    public Message(Supplier<T> payload) {
-        this(new Headers(), requireNonNull(payload));
+    public Message(Headers headers, T payload) {
+        this(requireNonNull(headers), () -> requireNonNull(payload));
     }
 
-    public Message(Collection<Pair<String, String>> headers, T payload) {
-        this(new Headers(requireNonNull(headers)), () -> requireNonNull(payload));
-    }
-
-    private Message(Headers headers, Supplier<T> payload) {
+    public Message(Headers headers, Supplier<T> payload) {
         this.headers = requireNonNull(headers);
         this.payload = requireNonNull(payload);
     }

@@ -26,7 +26,7 @@ public class LazyDeserializerSupplierTest {
     public void setUp() throws Exception {
         IntegerSerializer realSerializer = new IntegerSerializer();
         integerSerializer = spy(realSerializer);
-        victim = LazyDeserializerSupplier.from(integerSerializer, realSerializer.serialize(EXPECTED));
+        victim = new LazyDeserializerSupplier<>(integerSerializer, realSerializer.serialize(EXPECTED));
     }
 
     @Test

@@ -18,15 +18,11 @@ public class LazyDeserializerSupplier<T> implements Supplier<T> {
 
     private static final LogFormatEnforcer LOGGER = LogFormatEnforcer.loggerFor(LazyDeserializerSupplier.class);
 
-    public static <T> LazyDeserializerSupplier<T> from(Deserializer<T> serializer, byte[] bytes) {
-        return new LazyDeserializerSupplier<>(serializer, bytes);
-    }
-
     private final Deserializer<T> serializer;
     private final byte[] bytes;
     private T obj = null;
 
-    private LazyDeserializerSupplier(Deserializer<T> serializer, byte[] bytes) {
+    public LazyDeserializerSupplier(Deserializer<T> serializer, byte[] bytes) {
         this.serializer = requireNonNull(serializer);
         this.bytes = requireNonNull(bytes);
     }
