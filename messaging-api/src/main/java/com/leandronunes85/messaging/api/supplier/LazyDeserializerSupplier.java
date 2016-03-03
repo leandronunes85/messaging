@@ -1,20 +1,22 @@
 package com.leandronunes85.messaging.api.supplier;
 
+import com.leandronunes85.messaging.api.LogFormatEnforcer;
 import com.leandronunes85.messaging.api.serializer.Deserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
+import static org.slf4j.event.Level.DEBUG;
+import static org.slf4j.event.Level.TRACE;
 
 /**
  * {@link Supplier} implementation that lazily deserializes a given byte[].
+ *
  * @param <T> Type of the object supplied.
  */
 public class LazyDeserializerSupplier<T> implements Supplier<T> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LazyDeserializerSupplier.class);
+    private static final LogFormatEnforcer LOGGER = LogFormatEnforcer.loggerFor(LazyDeserializerSupplier.class);
 
     public static <T> LazyDeserializerSupplier<T> from(Deserializer<T> serializer, byte[] bytes) {
         return new LazyDeserializerSupplier<>(serializer, bytes);
@@ -37,12 +39,17 @@ public class LazyDeserializerSupplier<T> implements Supplier<T> {
     }
 
     private void deserializeBytes() {
-        LOG.trace("op=deserializeBytes, serializer='{}', bytesLength={}, msg='Obj will be deserialized.'",
-                serializer, bytes.length);
+        LOGGER.log(TRACE, b -> b.operation("deserializeBytes")
+                                .message("Obj will be deserialized")
+                                .and("serializer", serializer)
+                                .and("bytesLength", bytes.length));
 
         this.obj = serializer.deserialize(bytes);
 
-        LOG.debug("op=deserializeBytes, serializer='{}', bytesLength={}, obj='{}', msg='Obj was deserialized.'",
-                serializer, bytes.length, obj);
+        LOGGER.log(DEBUG, b -> b.operation("deserializeBytes")
+                                .message("Obj was deserialized")
+                                .and("serializer", serializer)
+                                .and("bytesLength", bytes.length)
+                                .and("obj", obj));
     }
 }

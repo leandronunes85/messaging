@@ -1,8 +1,9 @@
 package com.leandronunes85.messaging.api.model;
 
-import com.google.common.base.Optional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

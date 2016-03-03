@@ -1,19 +1,19 @@
 package com.leandronunes85.messaging.api.model;
 
-import com.google.common.base.Optional;
 import org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collection;
+import java.util.Optional;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.tuple.Pair.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MessageTest {
 
-    private static final Collection<Pair<String, String>> HEADERS = newArrayList(of("Key1", "Value1"));
+    private static final Collection<Pair<String, String>> HEADERS = asList(of("Key1", "Value1"));
     private static final String PAYLOAD = "Payload";
 
     private Message<String> victim;

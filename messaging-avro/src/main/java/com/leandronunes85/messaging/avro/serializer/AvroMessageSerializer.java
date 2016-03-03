@@ -11,7 +11,7 @@ import org.apache.avro.specific.SpecificDatumWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class AvroMessageSerializer<T> implements Serializer<Message<T>> {
 
@@ -20,7 +20,7 @@ public class AvroMessageSerializer<T> implements Serializer<Message<T>> {
     private final DatumReader<AvroMessage> datumReader;
 
     public AvroMessageSerializer(Serializer<T> payloadSerializer) {
-        this.messageConverter = new AvroMessageConverter<>(checkNotNull(payloadSerializer));
+        this.messageConverter = new AvroMessageConverter<>(requireNonNull(payloadSerializer));
         this.datumWriter = new SpecificDatumWriter<>(AvroMessage.getClassSchema());
         this.datumReader = new SpecificDatumReader<>(AvroMessage.getClassSchema());
     }

@@ -19,4 +19,22 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.leandronunes85.lfe</groupId>
+                <artifactId>log-format-enforcer-maven-plugin</artifactId>
+                <configuration>
+                    <packageName>com.leandronunes85.messaging.api</packageName>
+                    <mandatoryFields>
+                        <operation>op</operation>
+                    </mandatoryFields>
+                    <optionalFields>
+                        <message>msg</message>
+                    </optionalFields>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

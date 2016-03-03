@@ -4,12 +4,12 @@ import com.leandronunes85.messaging.api.serializer.IntegerSerializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.IntStream;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -57,24 +57,15 @@ public class LazyDeserializerSupplierTest {
     public void shouldOnlyDeserializeOnceWhenRequestedByMultipleThreads() throws Exception {
 
         ExecutorService executorService = newFixedThreadPool(5);
-        List<Future<Integer>> results = newArrayList();
+        List<Future<Integer>> results = new ArrayList();
 
-        for (int i = 0; i < 10; i++) {
-            results.add(
-                    executorService.submit(new Callable<Integer>() {
-                        @Override
-                        public Integer call() throws Exception {
-                            return victim.get();
-                        }
-                    })
-            );
-        }
+        IntStream.range(0, 10).forEach((i) -> results.add(executorService.submit(victim::get)));
 
         executorService.shutdown();
 
-        verify(integerSerializer, times(1)).deserialize(any(byte[].class));
         for (Future<Integer> result : results) {
             assertThat(result.get()).isEqualTo(EXPECTED);
         }
+        verify(integerSerializer, times(1)).deserialize(any(byte[].class));
     }
 }
