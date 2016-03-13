@@ -6,8 +6,6 @@ import com.leandronunes85.messaging.api.serializer.Deserializer;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
-import static org.slf4j.event.Level.DEBUG;
-import static org.slf4j.event.Level.TRACE;
 
 /**
  * {@link Supplier} implementation that lazily deserializes a given byte[].
@@ -35,17 +33,17 @@ public class LazyDeserializerSupplier<T> implements Supplier<T> {
     }
 
     private void deserializeBytes() {
-        LOGGER.log(TRACE, b -> b.operation("deserializeBytes")
-                                .message("Obj will be deserialized")
-                                .and("serializer", serializer)
-                                .and("bytesLength", bytes.length));
+        LOGGER.trace(b -> b.operation("deserializeBytes")
+                .message("Obj will be deserialized")
+                .and("serializer", serializer)
+                .and("bytesLength", bytes.length));
 
         this.obj = serializer.deserialize(bytes);
 
-        LOGGER.log(DEBUG, b -> b.operation("deserializeBytes")
-                                .message("Obj was deserialized")
-                                .and("serializer", serializer)
-                                .and("bytesLength", bytes.length)
-                                .and("obj", obj));
+        LOGGER.debug(b -> b.operation("deserializeBytes")
+                .message("Obj was deserialized")
+                .and("serializer", serializer)
+                .and("bytesLength", bytes.length)
+                .and("obj", obj));
     }
 }

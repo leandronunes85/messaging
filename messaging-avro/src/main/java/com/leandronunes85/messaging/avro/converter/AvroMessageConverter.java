@@ -15,8 +15,6 @@ import java.util.function.Supplier;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.slf4j.event.Level.DEBUG;
-import static org.slf4j.event.Level.TRACE;
 
 public class AvroMessageConverter<T> implements Converter<Message<T>, AvroMessage> {
 
@@ -30,7 +28,7 @@ public class AvroMessageConverter<T> implements Converter<Message<T>, AvroMessag
 
     @Override
     public AvroMessage convert(Message<T> toConvert) {
-        LOGGER.log(TRACE, b -> b.operation("convert").and("toConvert", toConvert));
+        LOGGER.trace(b -> b.operation("convert").and("toConvert", toConvert));
 
         AvroMessage.Builder builder = AvroMessage.newBuilder();
 
@@ -43,14 +41,14 @@ public class AvroMessageConverter<T> implements Converter<Message<T>, AvroMessag
 
         AvroMessage result = builder.build();
 
-        LOGGER.log(DEBUG, b -> b.operation("convert").and("toConvert", toConvert).and("result", result));
+        LOGGER.debug(b -> b.operation("convert").and("toConvert", toConvert).and("result", result));
 
         return result;
     }
 
     @Override
     public Message<T> reverse(AvroMessage toConvert) {
-        LOGGER.log(TRACE, b -> b.operation("reverse").and("toConvert", toConvert));
+        LOGGER.trace(b -> b.operation("reverse").and("toConvert", toConvert));
 
         Headers headers = new Headers(
                 toConvert.getHeaders().entrySet().stream()
@@ -60,7 +58,7 @@ public class AvroMessageConverter<T> implements Converter<Message<T>, AvroMessag
         Supplier<T> payload = new LazyDeserializerSupplier<>(payloadSerializer, toConvert.getPayload().array());
         Message<T> result = new Message<>(headers, payload);
 
-        LOGGER.log(DEBUG, b -> b.operation("reverse").and("toConvert", toConvert).and("result", result));
+        LOGGER.debug(b -> b.operation("reverse").and("toConvert", toConvert).and("result", result));
 
         return result;
     }

@@ -12,8 +12,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
-import static org.slf4j.event.Level.DEBUG;
-import static org.slf4j.event.Level.TRACE;
 
 /**
  * Headers to be used by the {@link Message} class. It stores key-value pairs (both represented by {@link String}s for
@@ -33,31 +31,31 @@ public class Headers {
     }
 
     public void put(String key, String value) {
-        LOGGER.log(TRACE, b -> b.operation("put").and("key", key).and("value", value));
+        LOGGER.trace(b -> b.operation("put").and("key", key).and("value", value));
         String oldValue = headersMap.put(requireNonNull(key), requireNonNull(value));
-        LOGGER.log(DEBUG, b -> b.operation("put").and("key", key).and("value", value).and("oldValue", oldValue));
+        LOGGER.debug(b -> b.operation("put").and("key", key).and("value", value).and("oldValue", oldValue));
     }
 
     public Optional<String> get(String key) {
-        LOGGER.log(TRACE, b -> b.operation("get").and("key", key));
+        LOGGER.trace(b -> b.operation("get").and("key", key));
         Optional<String> result = ofNullable(headersMap.get(key));
-        LOGGER.log(DEBUG, b -> b.operation("get").and("key", key).and("result", result));
+        LOGGER.debug(b -> b.operation("get").and("key", key).and("result", result));
         return result;
     }
 
     public Collection<Pair<String, String>> getAll() {
-        LOGGER.log(TRACE, b -> b.operation("getAll"));
+        LOGGER.trace(b -> b.operation("getAll"));
         Collection<Pair<String, String>> result = headersMap.entrySet().stream()
                 .map(e -> Pair.of(e.getKey(), e.getValue()))
                 .collect(toSet());
-        LOGGER.log(DEBUG, b -> b.operation("getAll").and("result", result));
+        LOGGER.debug(b -> b.operation("getAll").and("result", result));
         return result;
     }
 
     public Optional<String> remove(String key) {
-        LOGGER.log(TRACE, b -> b.operation("remove").and("key", key));
+        LOGGER.trace(b -> b.operation("remove").and("key", key));
         Optional<String> result = ofNullable(headersMap.remove(key));
-        LOGGER.log(DEBUG, b -> b.operation("remove").and("key", key).and("result", result));
+        LOGGER.debug(b -> b.operation("remove").and("key", key).and("result", result));
         return result;
     }
 }

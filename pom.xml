@@ -6,7 +6,7 @@
 
     <groupId>com.leandronunes85.messaging</groupId>
     <artifactId>messaging</artifactId>
-    <version>0.0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- plugins -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <log-format-enforcer-maven-plugin.version>1.0</log-format-enforcer-maven-plugin.version>
+        <log-format-enforcer-maven-plugin.version>1.1</log-format-enforcer-maven-plugin.version>
 
         <!-- dependencies -->
         <commons-lang3.version>3.4</commons-lang3.version>
