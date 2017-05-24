@@ -1,4 +1,4 @@
-#messaging-api
+# messaging-api
 
 This library introduces the concept of a *Message* comprised of *Headers* and *Payload*. *Headers* being plain 
 key-value pairs and *Payload* being whatever object needed for your own purposes. 
@@ -11,19 +11,19 @@ It is just a simple proposal for a common problem out there. It's still in an ea
 working on a high-concurrent environment with great results.
 
 
-#Implementations
+# Implementations
 
 There are several different serialization frameworks available and it will be very hard to have implementations for them
 all. For now there's an implementation based on Avro. Hopefully more will come!
 
-##messaging-avro
+## messaging-avro
 
 Apache Avro based implementation of message serialization. It defines an Avro specific message format that defines the 
 *Headers* format on the wire but delegates to a third party *Serializer* the responsibility to (de)serialize the payloads. 
 The nature of this third party *Serializer* is totally irrelevant: this implementation handles just as well Avro payload 
 serializers or any other kind of *Serializer*.
 
-###Prepare serializers
+### Prepare serializers
 ```java
 // You code this one
 Serializer<MyDomainObject> myDomainObjectSerializer = new MyDomainObjectSerializer();
@@ -31,7 +31,7 @@ Serializer<MyDomainObject> myDomainObjectSerializer = new MyDomainObjectSerializ
 Serializer<Message<MyDomainObject>> serializer = new AvroMessageSerializer<>(myDomainObjectSerializer);
 ```
 
-###Producer
+### Producer
 ```java
 // Create your domain object
 MyDomainObject myDomainObject = new MyDomainObject();
@@ -44,7 +44,7 @@ message.putHeader("year", "2015");
 byte[] bytes = serializer.serialize(message);
 ```
 
-###Consumer
+### Consumer
 ```java
 // Get hold of the bytes
 byte[] bytes = ...;
