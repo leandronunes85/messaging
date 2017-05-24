@@ -20,11 +20,14 @@ public class Message<T> {
     private final Supplier<T> payload;
 
     public Message(T payload) {
-        this(new Headers(), () -> requireNonNull(payload));
+        this(new Headers(), payload);
     }
 
     public Message(Headers headers, T payload) {
-        this(requireNonNull(headers), () -> requireNonNull(payload));
+        requireNonNull(payload);
+
+        this.headers = requireNonNull(headers);
+        this.payload = () -> payload;
     }
 
     public Message(Headers headers, Supplier<T> payload) {

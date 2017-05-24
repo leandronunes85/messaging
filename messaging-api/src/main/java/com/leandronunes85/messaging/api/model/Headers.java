@@ -4,10 +4,10 @@ import com.leandronunes85.messaging.api.LogFormatEnforcer;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toMap;
@@ -23,7 +23,7 @@ public class Headers {
     private final Map<String, String> headersMap;
 
     public Headers() {
-        this(Collections.EMPTY_LIST);
+        this(emptyList());
     }
 
     public Headers(Collection<Pair<String, String>> keyValuePairs) {
